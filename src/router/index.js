@@ -36,68 +36,68 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path:'/ums',
+    path:'/power',
     component: Layout,
-    redirect: '/ums/admin',
-    name: 'ums',
-    meta: {title: '权限', icon: 'ums'},
+    redirect: '/power/admin',
+    name: 'power',
+    meta: {title: '权限', icon: 'power'},
     children: [
       {
         path: 'admin',
         name: 'admin',
-        component: () => import('@/views/ums/admin/index'),
-        meta: {title: '用户列表', icon: 'ums-admin'}
+        component: () => import('@/views/power/admin/index'),
+        meta: {title: '用户列表', icon: 'power-admin'}
       },
       {
         path: 'role',
         name: 'role',
-        component: () => import('@/views/ums/role/index'),
-        meta: {title: '角色列表', icon: 'ums-role'}
+        component: () => import('@/views/power/role/index'),
+        meta: {title: '角色列表', icon: 'power-role'}
       },
       {
         path: 'allocMenu',
         name: 'allocMenu',
-        component: () => import('@/views/ums/role/allocMenu'),
+        component: () => import('@/views/power/role/allocMenu'),
         meta: {title: '分配菜单'},
         hidden: true
       },
       {
         path: 'allocResource',
         name: 'allocResource',
-        component: () => import('@/views/ums/role/allocResource'),
+        component: () => import('@/views/power/role/allocResource'),
         meta: {title: '分配资源'},
         hidden: true
       },
       {
         path: 'menu',
         name: 'menu',
-        component: () => import('@/views/ums/menu/index'),
-        meta: {title: '菜单列表', icon: 'ums-menu'}
+        component: () => import('@/views/power/menu/index'),
+        meta: {title: '菜单列表', icon: 'power-menu'}
       },
       {
         path: 'addMenu',
         name: 'addMenu',
-        component: () => import('@/views/ums/menu/add'),
+        component: () => import('@/views/power/menu/add'),
         meta: {title: '添加菜单'},
         hidden: true
       },
       {
         path: 'updateMenu',
         name: 'updateMenu',
-        component: () => import('@/views/ums/menu/update'),
+        component: () => import('@/views/power/menu/update'),
         meta: {title: '修改菜单'},
         hidden: true
       },
       {
         path: 'resource',
         name: 'resource',
-        component: () => import('@/views/ums/resource/index'),
-        meta: {title: '资源列表', icon: 'ums-resource'}
+        component: () => import('@/views/power/resource/index'),
+        meta: {title: '资源列表', icon: 'power-resource'}
       },
       {
         path: 'resourceCategory',
         name: 'resourceCategory',
-        component: () => import('@/views/ums/resource/categoryList'),
+        component: () => import('@/views/power/resource/categoryList'),
         meta: {title: '资源分类'},
         hidden: true
       }

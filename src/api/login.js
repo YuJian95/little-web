@@ -1,33 +1,30 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function login(params) {
   return request({
-    url: '/admin/login',
-    method: 'post',
-    data: {
-      username,
-      password
-    }
+    url: '/power/admin/login',
+    method: 'get',
+    params: params
   })
 }
 
 export function getInfo() {
   return request({
-    url: '/admin/info',
+    url: '/power/admin/info',
     method: 'get',
   })
 }
 
 export function logout() {
   return request({
-    url: '/admin/logout',
+    url: '/power/admin/logout',
     method: 'post'
   })
 }
 
 export function fetchList(params) {
   return request({
-    url: '/admin/list',
+    url: '/power/admin/list',
     method: 'get',
     params: params
   })
@@ -35,7 +32,7 @@ export function fetchList(params) {
 
 export function createAdmin(data) {
   return request({
-    url: '/admin/register',
+    url: '/power/admin/register',
     method: 'post',
     data: data
   })
@@ -43,7 +40,7 @@ export function createAdmin(data) {
 
 export function updateAdmin(id, data) {
   return request({
-    url: '/admin/update/' + id,
+    url: '/power/admin/update/' + id,
     method: 'post',
     data: data
   })
@@ -51,7 +48,7 @@ export function updateAdmin(id, data) {
 
 export function updateStatus(id, params) {
   return request({
-    url: '/admin/updateStatus/' + id,
+    url: '/power/admin/updateStatus/' + id,
     method: 'post',
     params: params
   })
@@ -59,21 +56,21 @@ export function updateStatus(id, params) {
 
 export function deleteAdmin(id) {
   return request({
-    url: '/admin/delete/' + id,
+    url: '/power/admin/delete/' + id,
     method: 'post'
   })
 }
 
 export function getRoleByAdmin(id) {
   return request({
-    url: '/admin/role/' + id,
+    url: '/power/admin/role/' + id,
     method: 'get'
   })
 }
 
 export function allocRole(data) {
   return request({
-    url: '/admin/role/update',
+    url: '/power/admin/role/update',
     method: 'post',
     data: data
   })
