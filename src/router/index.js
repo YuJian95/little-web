@@ -36,7 +36,7 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path:'/power',
+    path: '/power',
     component: Layout,
     redirect: '/power/admin',
     name: 'power',
@@ -100,6 +100,21 @@ export const asyncRouterMap = [
         component: () => import('@/views/power/resource/categoryList'),
         meta: {title: '资源分类'},
         hidden: true
+      }
+    ]
+  },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/dictionary',
+    name: 'system',
+    meta: {title: '系统', icon: 'system'},
+    children: [
+      {
+        path: 'dictionary',
+        name: 'dictionary',
+        component: () => import('@/views/system/dictionary/index'),
+        meta: {title: '数据字典', icon: 'system'}
       }
     ]
   },
