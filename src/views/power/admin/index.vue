@@ -48,11 +48,11 @@
         <el-table-column label="邮箱" align="center">
           <template slot-scope="scope">{{scope.row.email}}</template>
         </el-table-column>
-        <el-table-column label="创建时间" width="160" align="center">
-          <template slot-scope="scope">{{scope.row.gmtCreate | formatDateTime}}</template>
+        <el-table-column label="添加时间" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.createTime | formatDateTime}}</template>
         </el-table-column>
-        <el-table-column label="修改时间" width="160" align="center">
-          <template slot-scope="scope">{{scope.row.gmtModified | formatDateTime}}</template>
+        <el-table-column label="最后登录" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.loginTime | formatDateTime}}</template>
         </el-table-column>
         <el-table-column label="是否启用" width="140" align="center">
           <template slot-scope="scope">
@@ -136,7 +136,7 @@
       title="分配角色"
       :visible.sync="allocDialogVisible"
       width="30%">
-      <el-select v-model="allocRoleIdList" multiple placeholder="请选择" size="small" style="width: 80%">
+      <el-select v-model="allocRoleIds" multiple placeholder="请选择" size="small" style="width: 80%">
         <el-option
           v-for="item in allRoleList"
           :key="item.id"
@@ -152,16 +152,8 @@
   </div>
 </template>
 <script>
-  import {
-    fetchList,
-    createAdmin,
-    updateAdmin,
-    updateStatus,
-    deleteAdmin,
-    getRoleByAdmin,
-    allocRole
-  } from '@/api/power/power-admin';
-  import {fetchAllRoleList} from '@/api/power/power-role';
+  import {fetchList, createAdmin, updateAdmin, updateStatus, deleteAdmin, getRoleByAdmin, allocRole} from '@/api/login';
+  import {fetchAllRoleList} from '@/api/power/role';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
@@ -190,7 +182,7 @@
         admin: Object.assign({}, defaultAdmin),
         isEdit: false,
         allocDialogVisible: false,
-        allocRoleIdList: [],
+        allocRoleIds: [],
         allRoleList: [],
         allocAdminId: null
       }
@@ -277,7 +269,7 @@
           type: 'warning'
         }).then(() => {
           if (this.isEdit) {
-            updateAdmin(this.admin).then(response => {
+            updateAdmin(this.admin.id, this.admin).then(response => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'
@@ -305,7 +297,7 @@
         }).then(() => {
           let params = new URLSearchParams();
           params.append("adminId", this.allocAdminId);
-          params.append("roleIdList", this.allocRoleIdList);
+          params.append("roleIds", this.allocRoleIds);
           allocRole(params).then(response => {
             this.$message({
               message: '分配成功！',
@@ -336,10 +328,10 @@
       getRoleListByAdmin(adminId) {
         getRoleByAdmin(adminId).then(response => {
           let allocRoleList = response.data;
-          this.allocRoleIdList = [];
+          this.allocRoleIds = [];
           if (allocRoleList != null && allocRoleList.length > 0) {
             for (let i = 0; i < allocRoleList.length; i++) {
-              this.allocRoleIdList.push(allocRoleList[i].id);
+              this.allocRoleIds.push(allocRoleList[i].id);
             }
           }
         });

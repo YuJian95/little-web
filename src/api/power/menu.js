@@ -10,22 +10,22 @@ export function fetchList(parentId, params) {
 
 export function deleteMenu(id) {
   return request({
-    url: '/power/menu/' + id,
+    url: '/power/menu/delete/' + id,
     method: 'delete'
   })
 }
 
 export function createMenu(data) {
   return request({
-    url: '/power/menu',
+    url: '/power/menu/create',
     method: 'post',
     data: data
   })
 }
 
-export function updateMenu(data) {
+export function updateMenu(id, data) {
   return request({
-    url: '/power/menu',
+    url: '/power/menu/update/' + id,
     method: 'put',
     data: data
   })
@@ -40,7 +40,7 @@ export function getMenu(id) {
 
 export function updateHidden(id, params) {
   return request({
-    url: '/power/menu/hidden/' + id,
+    url: '/power/menu/updateHidden/' + id,
     method: 'put',
     params: params
   })
@@ -48,7 +48,7 @@ export function updateHidden(id, params) {
 
 export function fetchTreeList() {
   return request({
-    url: '/power/menu/list/tree',
+    url: '/power/menu/treeList',
     method: 'get'
   })
 }

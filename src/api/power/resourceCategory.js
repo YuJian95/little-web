@@ -15,9 +15,9 @@ export function createResourceCategory(data) {
   })
 }
 
-export function updateResourceCategory(data) {
+export function updateResourceCategory(id, data) {
   return request({
-    url: '/power/resource/category',
+    url: '/power/resource/category/' + id,
     method: 'put',
     data: data
   })

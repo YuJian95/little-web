@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import {fetchList, createMenu, updateMenu, getMenu} from '@/api/power/power-menu';
+  import {fetchList, createMenu, updateMenu, getMenu} from '@/api/power/menu';
 
   const defaultMenu = {
     title: '',
@@ -107,7 +107,7 @@
               type: 'warning'
             }).then(() => {
               if (this.isEdit) {
-                updateMenu(this.menu).then(response => {
+                updateMenu(this.$route.query.id, this.menu).then(response => {
                   this.$message({
                     message: '修改成功',
                     type: 'success',

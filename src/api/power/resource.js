@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
   return request({
-    url: '/power/resource/search',
+    url: '/power/resource/list',
     method: 'get',
     params: params
   })
@@ -16,9 +16,9 @@ export function createResource(data) {
   })
 }
 
-export function updateResource(data) {
+export function updateResource(id, data) {
   return request({
-    url: '/power/resource',
+    url: '/power/resource/' + id,
     method: 'put',
     data: data
   })

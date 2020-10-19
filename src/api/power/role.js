@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
   return request({
-    url: '/power/role/search',
+    url: '/power/role/list',
     method: 'get',
     params: params
   })
@@ -49,30 +49,30 @@ export function fetchAllRoleList() {
 
 export function listMenuByRole(roleId) {
   return request({
-    url: '/power/role/menu/'+roleId,
+    url: '/power/role/listMenu/'+roleId,
     method: 'get'
   })
 }
 
 export function listResourceByRole(roleId) {
   return request({
-    url: '/power/role/resource/'+roleId,
+    url: '/power/role/listResource/'+roleId,
     method: 'get'
   })
 }
 
 export function allocMenu(data) {
   return request({
-    url: '/power/role/menu',
-    method: 'put',
+    url: '/power/role/allocMenu',
+    method: 'post',
     data:data
   })
 }
 
 export function allocResource(data) {
   return request({
-    url: '/power/role/resource',
-    method: 'put',
+    url: '/power/role/allocResource',
+    method: 'post',
     data:data
   })
 }

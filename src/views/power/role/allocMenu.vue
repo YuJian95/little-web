@@ -18,8 +18,8 @@
 </template>
 
 <script>
-  import {fetchTreeList} from '@/api/power/power-menu';
-  import {listMenuByRole,allocMenu} from '@/api/power/power-role';
+  import {fetchTreeList} from '@/api/power/menu';
+  import {listMenuByRole,allocMenu} from '@/api/power/role';
 
   export default {
     name: "allocMenu",
@@ -47,27 +47,27 @@
       getRoleMenu(roleId){
         listMenuByRole(roleId).then(response=>{
           let menuList = response.data;
-          let checkedMenuIdList=[];
+          let checkedMenuIds=[];
           if(menuList!=null&&menuList.length>0){
             for(let i=0;i<menuList.length;i++){
               let menu = menuList[i];
               if(menu.parentId!==0){
-                checkedMenuIdList.push(menu.id);
+                checkedMenuIds.push(menu.id);
               }
             }
           }
-          this.$refs.tree.setCheckedKeys(checkedMenuIdList);
+          this.$refs.tree.setCheckedKeys(checkedMenuIds);
         });
       },
       handleSave() {
         let checkedNodes = this.$refs.tree.getCheckedNodes();
-        let checkedMenuIdList=new Set();
+        let checkedMenuIds=new Set();
         if(checkedNodes!=null&&checkedNodes.length>0){
           for(let i=0;i<checkedNodes.length;i++){
             let checkedNode = checkedNodes[i];
-            checkedMenuIdList.add(checkedNode.id);
+            checkedMenuIds.add(checkedNode.id);
             if(checkedNode.parentId!==0){
-              checkedMenuIdList.add(checkedNode.parentId);
+              checkedMenuIds.add(checkedNode.parentId);
             }
           }
         }
@@ -78,7 +78,7 @@
         }).then(()=>{
           let params = new URLSearchParams();
           params.append("roleId",this.roleId);
-          params.append("menuIdList",Array.from(checkedMenuIdList));
+          params.append("menuIds",Array.from(checkedMenuIds));
           allocMenu(params).then(response => {
             this.$message({
               message: '分配成功',
