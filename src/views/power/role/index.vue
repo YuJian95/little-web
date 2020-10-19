@@ -45,11 +45,11 @@
         <el-table-column label="描述" align="center">
           <template slot-scope="scope">{{scope.row.description}}</template>
         </el-table-column>
-        <el-table-column label="用户数"  width="100" align="center">
+        <el-table-column label="用户数" width="100" align="center">
           <template slot-scope="scope">{{scope.row.adminCount}}</template>
         </el-table-column>
-        <el-table-column label="添加时间" width="160" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatDateTime}}</template>
+        <el-table-column label="创建时间" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.gmtCreate | formatDateTime}}</template>
         </el-table-column>
         <el-table-column label="是否启用" width="140" align="center">
           <template slot-scope="scope">
@@ -74,15 +74,15 @@
               </el-button>
             </el-row>
             <el-row>
-            <el-button size="mini"
-                       type="text"
-                       @click="handleUpdate(scope.$index, scope.row)">
-              编辑
-            </el-button>
-            <el-button size="mini"
-                       type="text"
-                       @click="handleDelete(scope.$index, scope.row)">删除
-            </el-button>
+              <el-button size="mini"
+                         type="text"
+                         @click="handleUpdate(scope.$index, scope.row)">
+                编辑
+              </el-button>
+              <el-button size="mini"
+                         type="text"
+                         @click="handleDelete(scope.$index, scope.row)">删除
+              </el-button>
             </el-row>
           </template>
         </el-table-column>
@@ -131,7 +131,7 @@
   </div>
 </template>
 <script>
-  import {fetchList,createRole,updateRole,updateStatus,deleteRole} from '@/api/power/role';
+  import {fetchList, createRole, updateRole, updateStatus, deleteRole} from '@/api/power/power-role';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
@@ -191,7 +191,7 @@
       handleAdd() {
         this.dialogVisible = true;
         this.isEdit = false;
-        this.role = Object.assign({},defaultRole);
+        this.role = Object.assign({}, defaultRole);
       },
       handleStatusChange(index, row) {
         this.$confirm('是否要修改该状态?', '提示', {
@@ -221,8 +221,8 @@
         }).then(() => {
           let ids = [];
           ids.push(row.id);
-          let params=new URLSearchParams();
-          params.append("ids",ids);
+          let params = new URLSearchParams();
+          params.append("ids", ids);
           deleteRole(params).then(response => {
             this.$message({
               type: 'success',
@@ -235,7 +235,7 @@
       handleUpdate(index, row) {
         this.dialogVisible = true;
         this.isEdit = true;
-        this.role = Object.assign({},row);
+        this.role = Object.assign({}, row);
       },
       handleDialogConfirm() {
         this.$confirm('是否要确认?', '提示', {
@@ -244,12 +244,12 @@
           type: 'warning'
         }).then(() => {
           if (this.isEdit) {
-            updateRole(this.role.id,this.role).then(response => {
+            updateRole(this.role.id, this.role).then(response => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'
               });
-              this.dialogVisible =false;
+              this.dialogVisible = false;
               this.getList();
             })
           } else {
@@ -258,17 +258,17 @@
                 message: '添加成功！',
                 type: 'success'
               });
-              this.dialogVisible =false;
+              this.dialogVisible = false;
               this.getList();
             })
           }
         })
       },
-      handleSelectMenu(index,row){
-        this.$router.push({path:'/power/allocMenu',query:{roleId:row.id}})
+      handleSelectMenu(index, row) {
+        this.$router.push({path: '/power/allocMenu', query: {roleId: row.id}})
       },
-      handleSelectResource(index,row){
-        this.$router.push({path:'/power/allocResource',query:{roleId:row.id}})
+      handleSelectResource(index, row) {
+        this.$router.push({path: '/power/allocResource', query: {roleId: row.id}})
       },
       getList() {
         this.listLoading = true;

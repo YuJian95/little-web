@@ -61,8 +61,8 @@
         <el-table-column label="描述" align="center">
           <template slot-scope="scope">{{scope.row.description}}</template>
         </el-table-column>
-        <el-table-column label="添加时间" width="160" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatDateTime}}</template>
+        <el-table-column label="创建时间" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.gmtCreate | formatDateTime}}</template>
         </el-table-column>
         <el-table-column label="操作" width="140" align="center">
           <template slot-scope="scope">
@@ -128,8 +128,8 @@
   </div>
 </template>
 <script>
-  import {fetchList,createResource,updateResource,deleteResource} from '@/api/power/resource';
-  import {listAllCate} from '@/api/power/resourceCategory';
+  import {fetchList, createResource, updateResource, deleteResource} from '@/api/power/power-resource';
+  import {listAllCate} from '@/api/power/power-resource-category';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
@@ -137,14 +137,14 @@
     pageSize: 10,
     nameKeyword: null,
     urlKeyword: null,
-    categoryId:null
+    categoryId: null
   };
   const defaultResource = {
     id: null,
     name: null,
     url: null,
     categoryId: null,
-    description:''
+    description: ''
   };
   export default {
     name: 'resourceList',
@@ -157,8 +157,8 @@
         dialogVisible: false,
         resource: Object.assign({}, defaultResource),
         isEdit: false,
-        categoryOptions:[],
-        defaultCategoryId:null
+        categoryOptions: [],
+        defaultCategoryId: null
       }
     },
     created() {
@@ -194,7 +194,7 @@
       handleAdd() {
         this.dialogVisible = true;
         this.isEdit = false;
-        this.resource = Object.assign({},defaultResource);
+        this.resource = Object.assign({}, defaultResource);
         this.resource.categoryId = this.defaultCategoryId;
       },
       handleDelete(index, row) {
@@ -215,7 +215,7 @@
       handleUpdate(index, row) {
         this.dialogVisible = true;
         this.isEdit = true;
-        this.resource = Object.assign({},row);
+        this.resource = Object.assign({}, row);
       },
       handleDialogConfirm() {
         this.$confirm('是否要确认?', '提示', {
@@ -224,12 +224,12 @@
           type: 'warning'
         }).then(() => {
           if (this.isEdit) {
-            updateResource(this.resource.id,this.resource).then(response => {
+            updateResource(this.resource).then(response => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'
               });
-              this.dialogVisible =false;
+              this.dialogVisible = false;
               this.getList();
             })
           } else {
@@ -238,13 +238,13 @@
                 message: '添加成功！',
                 type: 'success'
               });
-              this.dialogVisible =false;
+              this.dialogVisible = false;
               this.getList();
             })
           }
         })
       },
-      handleShowCategory(){
+      handleShowCategory() {
         this.$router.push({path: '/power/resourceCategory'})
       },
       getList() {
@@ -255,14 +255,14 @@
           this.total = response.data.total;
         });
       },
-      getCateList(){
-        listAllCate().then(response=>{
+      getCateList() {
+        listAllCate().then(response => {
           let cateList = response.data;
-          for(let i=0;i<cateList.length;i++){
+          for (let i = 0; i < cateList.length; i++) {
             let cate = cateList[i];
-            this.categoryOptions.push({label:cate.name,value:cate.id});
+            this.categoryOptions.push({label: cate.name, value: cate.id});
           }
-          this.defaultCategoryId=cateList[0].id;
+          this.defaultCategoryId = cateList[0].id;
         })
       }
     }

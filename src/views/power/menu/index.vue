@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import {fetchList,deleteMenu,updateMenu,updateHidden} from '@/api/power/menu'
+  import {fetchList,deleteMenu,updateMenu,updateHidden} from '@/api/power/power-menu'
 
   export default {
     name: "menuList",

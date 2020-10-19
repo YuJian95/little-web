@@ -17,7 +17,7 @@
           <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
         <el-table-column label="创建时间" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatDateTime}}</template>
+          <template slot-scope="scope">{{scope.row.gmtCreate | formatDateTime}}</template>
         </el-table-column>
         <el-table-column label="排序" align="center">
           <template slot-scope="scope">{{scope.row.sort}}</template>
@@ -58,11 +58,17 @@
   </div>
 </template>
 <script>
-  import {listAllCate,createResourceCategory,updateResourceCategory,deleteResourceCategory} from '@/api/power/resourceCategory';
+  import {
+    listAllCate,
+    createResourceCategory,
+    updateResourceCategory,
+    deleteResourceCategory
+  } from '@/api/power/power-resource-category';
   import {formatDate} from '@/utils/date';
-  const defaultResourceCategory={
-    name:null,
-    sort:0
+
+  const defaultResourceCategory = {
+    name: null,
+    sort: 0
   };
   export default {
     name: 'resourceCategoryList',
@@ -70,15 +76,15 @@
       return {
         list: null,
         listLoading: false,
-        dialogVisible:false,
-        isEdit:false,
-        resourceCategory:Object.assign({},defaultResourceCategory)
+        dialogVisible: false,
+        isEdit: false,
+        resourceCategory: Object.assign({}, defaultResourceCategory)
       }
     },
     created() {
       this.getList();
     },
-    filters:{
+    filters: {
       formatDateTime(time) {
         if (time == null || time === '') {
           return 'N/A';
@@ -91,14 +97,14 @@
       handleAdd() {
         this.dialogVisible = true;
         this.isEdit = false;
-        this.resourceCategory = Object.assign({},defaultResourceCategory);
+        this.resourceCategory = Object.assign({}, defaultResourceCategory);
       },
-      handleUpdate(index,row){
+      handleUpdate(index, row) {
         this.dialogVisible = true;
         this.isEdit = true;
-        this.resourceCategory = Object.assign({},row);
+        this.resourceCategory = Object.assign({}, row);
       },
-      handleDelete(index,row){
+      handleDelete(index, row) {
         this.$confirm('是否要删除该分类?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -120,12 +126,12 @@
           type: 'warning'
         }).then(() => {
           if (this.isEdit) {
-            updateResourceCategory(this.resourceCategory.id,this.resourceCategory).then(response => {
+            updateResourceCategory(this.resourceCategory).then(response => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'
               });
-              this.dialogVisible =false;
+              this.dialogVisible = false;
               this.getList();
             })
           } else {
@@ -134,7 +140,7 @@
                 message: '添加成功！',
                 type: 'success'
               });
-              this.dialogVisible =false;
+              this.dialogVisible = false;
               this.getList();
             })
           }
