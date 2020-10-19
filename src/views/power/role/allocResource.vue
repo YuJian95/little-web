@@ -25,9 +25,9 @@
 </template>
 
 <script>
-  import {fetchAllResourceList} from '@/api/resource';
-  import {listAllCate} from '@/api/resourceCategory';
-  import {allocResource,listResourceByRole} from '@/api/role';
+  import {fetchAllResourceList} from '@/api/power/resource';
+  import {listAllCate} from '@/api/power/resourceCategory';
+  import {allocResource,listResourceByRole} from '@/api/power/role';
 
   export default {
     name: "allocResource",

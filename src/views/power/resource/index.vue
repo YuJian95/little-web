@@ -128,8 +128,8 @@
   </div>
 </template>
 <script>
-  import {fetchList,createResource,updateResource,deleteResource} from '@/api/resource';
-  import {listAllCate} from '@/api/resourceCategory';
+  import {fetchList,createResource,updateResource,deleteResource} from '@/api/power/resource';
+  import {listAllCate} from '@/api/power/resourceCategory';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
@@ -245,7 +245,7 @@
         })
       },
       handleShowCategory(){
-        this.$router.push({path: '/ums/resourceCategory'})
+        this.$router.push({path: '/power/resourceCategory'})
       },
       getList() {
         this.listLoading = true;

@@ -131,7 +131,7 @@
   </div>
 </template>
 <script>
-  import {fetchList,createRole,updateRole,updateStatus,deleteRole} from '@/api/role';
+  import {fetchList,createRole,updateRole,updateStatus,deleteRole} from '@/api/power/role';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
@@ -265,10 +265,10 @@
         })
       },
       handleSelectMenu(index,row){
-        this.$router.push({path:'/ums/allocMenu',query:{roleId:row.id}})
+        this.$router.push({path:'/power/allocMenu',query:{roleId:row.id}})
       },
       handleSelectResource(index,row){
-        this.$router.push({path:'/ums/allocResource',query:{roleId:row.id}})
+        this.$router.push({path:'/power/allocResource',query:{roleId:row.id}})
       },
       getList() {
         this.listLoading = true;

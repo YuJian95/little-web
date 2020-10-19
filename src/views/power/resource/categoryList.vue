@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-  import {listAllCate,createResourceCategory,updateResourceCategory,deleteResourceCategory} from '@/api/resourceCategory';
+  import {listAllCate,createResourceCategory,updateResourceCategory,deleteResourceCategory} from '@/api/power/resourceCategory';
   import {formatDate} from '@/utils/date';
   const defaultResourceCategory={
     name:null,

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
   return request({
-    url: '/resource/list',
+    url: '/power/resource/list',
     method: 'get',
     params: params
   })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function createResource(data) {
   return request({
-    url: '/resource/create',
+    url: '/power/resource',
     method: 'post',
     data: data
   })
@@ -18,22 +18,22 @@ export function createResource(data) {
 
 export function updateResource(id, data) {
   return request({
-    url: '/resource/update/' + id,
-    method: 'post',
+    url: '/power/resource/' + id,
+    method: 'put',
     data: data
   })
 }
 
 export function deleteResource(id) {
   return request({
-    url: '/resource/delete/' + id,
-    method: 'post'
+    url: '/power/resource/' + id,
+    method: 'delete'
   })
 }
 
 export function fetchAllResourceList() {
   return request({
-    url: '/resource/listAll',
+    url: '/power/resource/list/all',
     method: 'get'
   })
 }

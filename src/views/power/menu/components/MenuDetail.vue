@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import {fetchList, createMenu, updateMenu, getMenu} from '@/api/menu';
+  import {fetchList, createMenu, updateMenu, getMenu} from '@/api/power/menu';
 
   const defaultMenu = {
     title: '',

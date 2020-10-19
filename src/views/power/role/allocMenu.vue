@@ -18,8 +18,8 @@
 </template>
 
 <script>
-  import {fetchTreeList} from '@/api/menu';
-  import {listMenuByRole,allocMenu} from '@/api/role';
+  import {fetchTreeList} from '@/api/power/menu';
+  import {listMenuByRole,allocMenu} from '@/api/power/role';
 
   export default {
     name: "allocMenu",

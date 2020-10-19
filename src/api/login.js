@@ -41,7 +41,7 @@ export function createAdmin(data) {
 export function updateAdmin(id, data) {
   return request({
     url: '/power/admin/update/' + id,
-    method: 'post',
+    method: 'put',
     data: data
   })
 }
@@ -49,7 +49,7 @@ export function updateAdmin(id, data) {
 export function updateStatus(id, params) {
   return request({
     url: '/power/admin/updateStatus/' + id,
-    method: 'post',
+    method: 'put',
     params: params
   })
 }
@@ -57,7 +57,7 @@ export function updateStatus(id, params) {
 export function deleteAdmin(id) {
   return request({
     url: '/power/admin/delete/' + id,
-    method: 'post'
+    method: 'delete'
   })
 }
 
@@ -71,7 +71,7 @@ export function getRoleByAdmin(id) {
 export function allocRole(data) {
   return request({
     url: '/power/admin/role/update',
-    method: 'post',
+    method: 'put',
     data: data
   })
 }

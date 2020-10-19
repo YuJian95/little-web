@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function listAllCate() {
   return request({
-    url: '/resourceCategory/listAll',
+    url: '/power/resource/category/list/all',
     method: 'get'
   })
 }
 
 export function createResourceCategory(data) {
   return request({
-    url: '/resourceCategory/create',
+    url: '/power/resource/category',
     method: 'post',
     data: data
   })
@@ -17,15 +17,15 @@ export function createResourceCategory(data) {
 
 export function updateResourceCategory(id, data) {
   return request({
-    url: '/resourceCategory/update/' + id,
-    method: 'post',
+    url: '/power/resource/category/' + id,
+    method: 'put',
     data: data
   })
 }
 
 export function deleteResourceCategory(id) {
   return request({
-    url: '/resourceCategory/delete/' + id,
-    method: 'post'
+    url: '/power/resource/category/' + id,
+    method: 'detele'
   })
 }

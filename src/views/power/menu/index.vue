@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import {fetchList,deleteMenu,updateMenu,updateHidden} from '@/api/menu'
+  import {fetchList,deleteMenu,updateMenu,updateHidden} from '@/api/power/menu'
 
   export default {
     name: "menuList",
@@ -121,7 +121,7 @@
         }
       },
       handleAddMenu() {
-        this.$router.push('/ums/addMenu');
+        this.$router.push('/power/addMenu');
       },
       getList() {
         this.listLoading = true;
@@ -150,10 +150,10 @@
         });
       },
       handleShowNextLevel(index, row) {
-        this.$router.push({path: '/ums/menu', query: {parentId: row.id}})
+        this.$router.push({path: '/power/menu', query: {parentId: row.id}})
       },
       handleUpdate(index, row) {
-        this.$router.push({path:'/ums/updateMenu',query:{id:row.id}});
+        this.$router.push({path:'/power/updateMenu',query:{id:row.id}});
       },
       handleDelete(index, row) {
         this.$confirm('是否要删除该菜单', '提示', {
