@@ -11,7 +11,6 @@
       }
     },
     created(){
-      this.getData();
     },
     methods:{
     }
