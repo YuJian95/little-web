@@ -244,7 +244,7 @@
           type: 'warning'
         }).then(() => {
           if (this.isEdit) {
-            updateRole(this.role.id, this.role).then(response => {
+            updateRole(this.role).then(response => {
               this.$message({
                 message: '修改成功！',
                 type: 'success'

@@ -10,9 +10,6 @@
       return {
       }
     },
-    created(){
-      this.getData();
-    },
     methods:{
     }
   }

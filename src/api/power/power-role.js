@@ -16,9 +16,9 @@ export function createRole(data) {
   })
 }
 
-export function updateRole(id, data) {
+export function updateRole(data) {
   return request({
-    url: '/power/role/' + id,
+    url: '/power/role',
     method: 'put',
     data: data
   })
@@ -34,9 +34,9 @@ export function updateStatus(id, params) {
 
 export function deleteRole(data) {
   return request({
-    url:'/power/role',
-    method:'delete',
-    data:data
+    url: '/power/role',
+    method: 'delete',
+    data: data
   })
 }
 
@@ -49,14 +49,14 @@ export function fetchAllRoleList() {
 
 export function listMenuByRole(roleId) {
   return request({
-    url: '/power/role/menu/'+roleId,
+    url: '/power/role/menu/' + roleId,
     method: 'get'
   })
 }
 
 export function listResourceByRole(roleId) {
   return request({
-    url: '/power/role/resource/'+roleId,
+    url: '/power/role/resource/' + roleId,
     method: 'get'
   })
 }
@@ -65,7 +65,7 @@ export function allocMenu(data) {
   return request({
     url: '/power/role/menu',
     method: 'put',
-    data:data
+    data: data
   })
 }
 
@@ -73,6 +73,6 @@ export function allocResource(data) {
   return request({
     url: '/power/role/resource',
     method: 'put',
-    data:data
+    data: data
   })
 }
