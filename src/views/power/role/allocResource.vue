@@ -25,9 +25,9 @@
 </template>
 
 <script>
-  import {fetchAllResourceList} from '@/api/power/resource';
-  import {listAllCate} from '@/api/power/resourceCategory';
-  import {allocResource,listResourceByRole} from '@/api/power/role';
+  import {fetchAllResourceList} from '@/api/power/power-resource';
+  import {listAllCate} from '@/api/power/power-resource-category';
+  import {allocResource,listResourceByRole} from '@/api/power/power-role';
 
   export default {
     name: "allocResource",
@@ -124,17 +124,17 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let checkedResourceIds = new Set();
+          let checkedResourceIdList = new Set();
           if (this.allResource != null && this.allResource.length > 0) {
             this.allResource.forEach(item => {
               if (item.checked) {
-                checkedResourceIds.add(item.id);
+                checkedResourceIdList.add(item.id);
               }
             });
           }
           let params = new URLSearchParams();
           params.append("roleId", this.roleId);
-          params.append("resourceIds", Array.from(checkedResourceIds));
+          params.append("resourceIdList", Array.from(checkedResourceIdList));
           allocResource(params).then(response => {
             this.$message({
               message: '分配成功',
