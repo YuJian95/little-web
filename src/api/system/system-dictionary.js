@@ -8,6 +8,22 @@ export function fetchList(params) {
   })
 }
 
+export function searchList(params) {
+  return request({
+    url: '/system/dictionary/search',
+    method: 'get',
+    params: params
+  })
+}
+
+export function updateStatus(id, params) {
+  return request({
+    url: '/system/dictionary/status/' + id,
+    method: 'put',
+    params: params
+  })
+}
+
 export function createDictionary(data) {
   return request({
     url: '/system/dictionary',

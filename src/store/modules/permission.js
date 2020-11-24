@@ -54,7 +54,7 @@ function sortRouters(accessedRouters) {
   accessedRouters.sort(compare("sort"));
 }
 
-//降序比较函数
+// 降序比较函数
 function compare(p){
   return function(m,n){
     let a = m[p];

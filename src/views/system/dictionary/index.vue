@@ -20,21 +20,12 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="显示值：">
-            <el-input v-model="listQuery.showValue" class="input-width" placeholder="显示值" clearable></el-input>
+          <el-form-item label="显示值 / 字典码：">
+            <el-input v-model="listQuery.keyword" class="input-width" placeholder="显示值 / 字典码" clearable></el-input>
           </el-form-item>
-          <el-form-item label="字典码：">
-            <el-input v-model="listQuery.code" class="input-width" placeholder="字典码" clearable></el-input>
+          <el-form-item label="类型：">
+            <el-input v-model="listQuery.type" class="input-width" placeholder="类型" clearable></el-input>
           </el-form-item>
-<!--          <el-form-item label="字典分类：">-->
-<!--            <el-select v-model="listQuery.tpyeId" placeholder="全部" clearable class="input-width">-->
-<!--              <el-option v-for="item in tpyeOptions"-->
-<!--                         :key="item.value"-->
-<!--                         :label="item.label"-->
-<!--                         :value="item.value">-->
-<!--              </el-option>-->
-<!--            </el-select>-->
-<!--          </el-form-item>-->
         </el-form>
       </div>
     </el-card>
@@ -42,7 +33,6 @@
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
       <el-button size="mini" class="btn-add" @click="handleAdd()" style="margin-left: 20px">添加</el-button>
-      <el-button size="mini" class="btn-add" @click="handleShowtpye()">字典分类</el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="dictionaryTable"
@@ -60,6 +50,16 @@
         </el-table-column>
         <el-table-column label="显示值" align="center">
           <template slot-scope="scope">{{scope.row.showValue}}</template>
+        </el-table-column>
+        <el-table-column label="是否显示" width="100" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              @change="handleUpdateStatus(scope.$index, scope.row)"
+              :active-value="0"
+              :inactive-value="1"
+              v-model="scope.row.status">
+            </el-switch>
+          </template>
         </el-table-column>
         <el-table-column label="描述" align="center">
           <template slot-scope="scope">{{scope.row.description}}</template>
@@ -113,15 +113,12 @@
         <el-form-item label="字典码：">
           <el-input v-model="dictionary.code" style="width: 250px"></el-input>
         </el-form-item>
-<!--        <el-form-item label="字典分类：">-->
-<!--          <el-select v-model="dictionary.tpyeId" placeholder="全部" clearable style="width: 250px">-->
-<!--            <el-option v-for="item in tpyeOptions"-->
-<!--                       :key="item.value"-->
-<!--                       :label="item.label"-->
-<!--                       :value="item.value">-->
-<!--            </el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <el-form-item label="是否显示：">
+          <el-radio-group v-model="dictionary.status">
+            <el-radio :label="0">是</el-radio>
+            <el-radio :label="1">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="描述：">
           <el-input v-model="dictionary.description"
                     type="textarea"
@@ -140,17 +137,22 @@
   </div>
 </template>
 <script>
-  import {fetchList, createDictionary, updateDictionary, deleteDictionary} from '@/api/system/system-dictionary';
-  import {listAllCate} from '@/api/system/system-dictionary-tpye';
+  import {
+    searchList,
+    updateStatus,
+    createDictionary,
+    updateDictionary,
+    deleteDictionary
+  } from '@/api/system/system-dictionary';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
-    showValue: null,
-    code: null,
-    tpyeId: null
+    keyword: null,
+    type: null
   };
+
   const defaultDictionary = {
     id: null,
     type: '',
@@ -159,7 +161,9 @@
     remark: '',
     description: '',
     sort: 0,
-    status: null
+    status: null,
+    gmtCreate: null,
+    gmtModified: null,
   };
   export default {
     name: 'dictionaryList',
@@ -172,13 +176,12 @@
         dialogVisible: false,
         dictionary: Object.assign({}, defaultDictionary),
         isEdit: false,
-        tpyeOptions: [],
-        defaultTpyeId: null
+        typeOptions: [],
+        defaultType: null
       }
     },
     created() {
       this.getList();
-      this.getCateList();
     },
     filters: {
       formatDateTime(time) {
@@ -210,7 +213,7 @@
         this.dialogVisible = true;
         this.isEdit = false;
         this.dictionary = Object.assign({}, defaultDictionary);
-        this.dictionary.tpyeId = this.defaultTpyeId;
+        this.dictionary.type = this.defaultType;
       },
       handleDelete(index, row) {
         this.$confirm('是否要删除该字典?', '提示', {
@@ -231,6 +234,15 @@
         this.dialogVisible = true;
         this.isEdit = true;
         this.dictionary = Object.assign({}, row);
+      },
+      handleUpdateStatus(index, row) {
+        updateStatus(row.id, {status: row.status}).then(response => {
+          this.$message({
+            message: '修改成功',
+            type: 'success',
+            duration: 1000
+          });
+        });
       },
       handleDialogConfirm() {
         this.$confirm('是否要确认?', '提示', {
@@ -259,28 +271,17 @@
           }
         })
       },
-      handleShowtpye() {
-        this.$router.push({path: '/system/dictionary/tpye'})
+      handleShowType() {
+        this.$router.push({path: '/system/dictionary/type'})
       },
       getList() {
         this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
+        searchList(this.listQuery).then(response => {
           this.listLoading = false;
           this.list = response.data.list;
           this.total = response.data.total;
         });
       },
-      // 获取类型列表
-      getCateList() {
-        listAllCate().then(response => {
-          let cateList = response.data;
-          for (let i = 0; i < cateList.length; i++) {
-            let cate = cateList[i];
-            this.tpyeOptions.push({label: cate.name, value: cate.id});
-          }
-          this.defaultTpyeId = cateList[0].id;
-        })
-      }
     }
   }
 </script>
