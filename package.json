@@ -1,7 +1,7 @@
 {
-  "name": "little-club-web",
+  "name": "little-web",
   "version": "1.0.0",
-  "description": "little-club 后台管理前端",
+  "description": "little 后台管理前端",
   "author": "yujian95",
   "private": true,
   "scripts": {

@@ -9,7 +9,7 @@
         <div style="text-align: center">
           <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
         </div>
-        <h2 class="login-title color-main">little-club-web</h2>
+        <h2 class="login-title color-main">little-web</h2>
         <el-form-item prop="username">
           <el-input name="username"
                     type="text"
