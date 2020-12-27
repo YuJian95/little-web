@@ -140,6 +140,36 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/club',
+    component: Layout,
+    redirect: '/club/info',
+    name: 'club',
+    meta: {title: '社团', icon: 'club'},
+    children: [
+      {
+        path: 'info',
+        name: 'club-info',
+        component: () => import('@/views/club/info/index'),
+        meta: {title: '社团列表', icon: 'info'}
+      }
+    ]
+  },
+  {
+    path: '/activity',
+    component: Layout,
+    redirect: '/activity/info',
+    name: 'activity',
+    meta: {title: '活动', icon: 'activity'},
+    children: [
+      {
+        path: 'info',
+        name: 'activity-info',
+        component: () => import('@/views/activity/info/index'),
+        meta: {title: '活动信息', icon: 'info'}
+      }
+    ]
+  },
   {path: '*', redirect: '/404', hidden: true}
 ]
 
