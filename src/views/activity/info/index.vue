@@ -20,11 +20,8 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="用户名：">
-            <el-input v-model="listQuery.keyword" class="input-width" placeholder="用户名" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="URI：">
-            <el-input v-model="listQuery.uri" class="input-width" placeholder="uri" clearable></el-input>
+          <el-form-item label="输入搜索：">
+            <el-input v-model="listQuery.keyword" class="input-width" placeholder="活动名称" clearable></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -32,35 +29,51 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
+      <el-button size="mini" class="btn-add" @click="handleAdd()" style="margin-left: 20px">添加</el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="apiTable"
+      <el-table ref="activityTable"
                 :data="list"
                 style="width: 100%;"
                 v-loading="listLoading" border>
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户名" width="150" align="center">
-          <template slot-scope="scope">{{scope.row.username}}</template>
+        <el-table-column label="活动名称" width="150" align="center">
+          <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
-        <el-table-column label="系统" width="100" align="center">
+        <el-table-column label="活动类型" width="100" align="center">
           <template slot-scope="scope">{{scope.row.type}}</template>
         </el-table-column>
-        <el-table-column label="描述">
-          <template slot-scope="scope">{{scope.row.description}}</template>
+        <el-table-column label="活动地址" align="center">
+          <template slot-scope="scope">{{scope.row.address}}</template>
         </el-table-column>
         <el-table-column label="开始时间" width="160" align="center">
-          <template slot-scope="scope">{{scope.row.startTime | formatDateTime}}</template>
+          <template slot-scope="scope">{{scope.row.start | formatDateTime}}</template>
         </el-table-column>
-        <el-table-column label="耗时" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.spendTime}}</template>
+        <el-table-column label="结束时间" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.end | formatDateTime}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="140" align="center">
+        <el-table-column label="是否启用" width="140" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              @change="handleStatusChange(scope.$index, scope.row)"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.status">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-button size="mini"
-                       type="text">
-              查看
+                       type="text"
+                       @click="handleUpdate(scope.$index, scope.row)">
+              编辑
+            </el-button>
+            <el-button size="mini"
+                       type="text"
+                       @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -78,35 +91,84 @@
         :total="total">
       </el-pagination>
     </div>
+    <el-dialog
+      :title="isEdit?'编辑活动信息':'添加活动信息'"
+      :visible.sync="dialogVisible"
+      width="40%">
+      <el-form :model="activity"
+               ref="activityForm"
+               label-width="150px" size="small">
+        <el-form-item label="活动名称：">
+          <el-input v-model="activity.name" style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="活动类型：">
+          <el-input v-model="activity.type" type="type" style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="活动地址：">
+          <el-input v-model="activity.address" style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="开始日期：">
+          <el-date-picker
+            v-model="activity.start"
+            type="datetime"
+            placeholder="选择日期时间"
+            align="right"
+            default-time="19:00:00"
+            style="width: 250px">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="结束日期：">
+          <el-date-picker
+            v-model="activity.end"
+            type="datetime"
+            placeholder="选择日期时间"
+            align="right"
+            default-time="21:00:00"
+            style="width: 250px">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="是否启用：">
+          <el-radio-group v-model="activity.status">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="handleDialogConfirm()" size="small">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
   import {
-    searchList, fetchList
-  } from '@/api/system/system-api';
+    searchList,
+    createActivity,
+    updateActivity,
+    updateStatus,
+    deleteActivity
+  } from '@/api/activity/activity-info';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
     pageNum: 1,
     pageSize: 10,
-    keyword: null,
-    uri: null
+    keyword: null
   };
-
-  const defaultApiLog = {
+  const defaultActivity = {
     id: null,
-    type: '',
-    username: '',
-    description: '',
-    uri: '',
-    method: '',
-    startTime: null,
-    spendTime: '',
+    name: null,
+    type: null,
+    address: null,
+    start: null,
+    end: null,
+    status: 1,
     gmtCreate: null,
-    gmtModified: null,
+    gmtModified: null
   };
   export default {
-    name: 'apiList',
+    name: 'activityList',
     data() {
       return {
         listQuery: Object.assign({}, defaultListQuery),
@@ -114,10 +176,12 @@
         total: null,
         listLoading: false,
         dialogVisible: false,
-        api: Object.assign({}, defaultApiLog),
+        activity: Object.assign({}, defaultActivity),
         isEdit: false,
-        typeOptions: [],
-        defaultType: null
+        allocDialogVisible: false,
+        allocRoleIdList: [],
+        allRoleList: [],
+        allocActivityId: null
       }
     },
     created() {
@@ -149,6 +213,72 @@
         this.listQuery.pageNum = val;
         this.getList();
       },
+      handleAdd() {
+        this.dialogVisible = true;
+        this.isEdit = false;
+        this.activity = Object.assign({}, defaultActivity);
+      },
+      handleStatusChange(index, row) {
+        this.$confirm('是否要修改该状态?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          updateStatus(row.id, {status: row.status}).then(response => {
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消修改'
+          });
+          this.getList();
+        });
+      },
+      handleDelete(index, row) {
+        this.$confirm('是否要删除该活动信息?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteActivity(row.id).then(response => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getList();
+          });
+        });
+      },
+      handleUpdate(index, row) {
+        this.dialogVisible = true;
+        this.isEdit = true;
+        this.activity = Object.assign({}, row);
+      },
+      handleDialogConfirm() {
+        if (this.isEdit) {
+          updateActivity(this.activity).then(response => {
+            this.$message({
+              message: '修改成功！',
+              type: 'success'
+            });
+            this.dialogVisible = false;
+            this.getList();
+          })
+        } else {
+          createActivity(this.activity).then(response => {
+            this.$message({
+              message: '添加成功！',
+              type: 'success'
+            });
+            this.dialogVisible = false;
+            this.getList();
+          })
+        }
+      },
       getList() {
         this.listLoading = true;
         searchList(this.listQuery).then(response => {
@@ -156,7 +286,7 @@
           this.list = response.data.list;
           this.total = response.data.total;
         });
-      },
+      }
     }
   }
 </script>

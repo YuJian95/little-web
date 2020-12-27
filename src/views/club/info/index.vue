@@ -20,10 +20,10 @@
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="用户名：">
+          <el-form-item label="社团名称：">
             <el-input v-model="listQuery.keyword" class="input-width" placeholder="用户名" clearable></el-input>
           </el-form-item>
-          <el-form-item label="URI：">
+          <el-form-item label="状态">
             <el-input v-model="listQuery.uri" class="input-width" placeholder="uri" clearable></el-input>
           </el-form-item>
         </el-form>
@@ -41,20 +41,20 @@
         <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="用户名" width="150" align="center">
-          <template slot-scope="scope">{{scope.row.username}}</template>
+        <el-table-column label="名称" width="150" align="center">
+          <template slot-scope="scope">{{scope.row.name}}</template>
         </el-table-column>
-        <el-table-column label="系统" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.type}}</template>
+        <el-table-column label="简称" width="100" align="center">
+          <template slot-scope="scope">{{scope.row.shortName}}</template>
         </el-table-column>
-        <el-table-column label="描述">
-          <template slot-scope="scope">{{scope.row.description}}</template>
+        <el-table-column label="会徽">
+          <template slot-scope="scope">{{scope.row.logo}}</template>
         </el-table-column>
-        <el-table-column label="开始时间" width="160" align="center">
-          <template slot-scope="scope">{{scope.row.startTime | formatDateTime}}</template>
+        <el-table-column label="成立年份" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.founded}}</template>
         </el-table-column>
-        <el-table-column label="耗时" width="100" align="center">
-          <template slot-scope="scope">{{scope.row.spendTime}}</template>
+        <el-table-column label="状态" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.status}}</template>
         </el-table-column>
         <el-table-column label="操作" width="140" align="center">
           <template slot-scope="scope">
@@ -82,8 +82,8 @@
 </template>
 <script>
   import {
-    searchList, fetchList
-  } from '@/api/system/system-api';
+    searchList
+  } from '@/api/club/club-info';
   import {formatDate} from '@/utils/date';
 
   const defaultListQuery = {
@@ -93,20 +93,18 @@
     uri: null
   };
 
-  const defaultApiLog = {
+  const defaultClubInfo = {
     id: null,
-    type: '',
-    username: '',
-    description: '',
-    uri: '',
-    method: '',
-    startTime: null,
-    spendTime: '',
+    name: '',
+    shortName: '',
+    logo: '',
+    founded: '',
+    status: null,
     gmtCreate: null,
     gmtModified: null,
   };
   export default {
-    name: 'apiList',
+    name: 'club-info',
     data() {
       return {
         listQuery: Object.assign({}, defaultListQuery),
@@ -114,7 +112,7 @@
         total: null,
         listLoading: false,
         dialogVisible: false,
-        api: Object.assign({}, defaultApiLog),
+        api: Object.assign({}, defaultClubInfo),
         isEdit: false,
         typeOptions: [],
         defaultType: null

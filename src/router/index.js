@@ -151,7 +151,7 @@ export const asyncRouterMap = [
         path: 'info',
         name: 'club-info',
         component: () => import('@/views/club/info/index'),
-        meta: {title: '社团信息', icon: 'info'}
+        meta: {title: '社团列表', icon: 'info'}
       }
     ]
   },
